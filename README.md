@@ -31,7 +31,7 @@
   - `/webos` — example webOS app  
   - `/androidtv` — example Android TV app  
   - `/roku` — example Roku app  
-- `/assets` — logo and images (including `moq-tv-avatar-navy.png`)  
+- `/assets` — logo and images (including `moq-tv-navy.jpeg`)  
 - `/scripts` — helper scripts to run test streams, app packaging, etc
 
 ## Getting Started
