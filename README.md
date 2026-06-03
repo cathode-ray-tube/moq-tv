@@ -2,7 +2,7 @@
 
 ![moq tv logo](./moq-tv-navy.jpeg)
 
-moq-tv is a project to bring Media over QUIC (MoQ) to Smart TVs — focused on low-latency broadcasting and smooth viewer experience for live streams.
+**[moq-tv](https://github.com/cathode-ray-tube/moq-tv)** is a project to bring Media over QUIC (MoQ) to Smart TVs — focused on low-latency broadcasting and smooth viewer experience for live streams.
 
 ## Goals
 - Provide a reference implementation for low-latency Media over QUIC (MoQ) on Smart TV platforms.
