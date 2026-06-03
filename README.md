@@ -2,16 +2,16 @@
 
 ![moq tv logo](./moq-tv-navy.jpeg)
 
-moq-tv is a project to bring Media over QUIC (MoQ) to smart TVs — focused on low-latency broadcasting and smooth viewer experience for live streams.
+moq-tv is a project to bring Media over QUIC (MoQ) to Smart TVs — focused on low-latency broadcasting and smooth viewer experience for live streams.
 
 ## Goals
-- Provide a reference implementation for low-latency Media over QUIC (MoQ) on smart TV platforms.
-- Produce example apps for major smart TV platforms that developers can run, study and modify.
+- Provide a reference implementation for low-latency Media over QUIC (MoQ) on Smart TV platforms.
+- Produce example apps for major Smart TV platforms that developers can run, study and modify.
 - Demonstrate best practices for adaptive streaming, synchronization and resiliency using MoQ.
 
 ## Key Features
 - Low-latency broadcasting with QUIC transport  
-- Reference/example applications for main smart TV platforms (initial targets below)  
+- Reference/example applications for main Smart TV platforms (initial targets below)  
 - Modular design so developers can adapt or replace components  
 - Simple APIs for ingesting, packaging, and playback
 
