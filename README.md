@@ -47,6 +47,7 @@
 ## Contributing
 
 All example apps are intentionally permissive for modification. Fork, adapt and open pull requests with improvements.
+
 If you contribute code that changes licensing or IP expectations, please include a note in your PR.
 
 ## License
