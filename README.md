@@ -18,13 +18,13 @@ This project implements the **moq-lite** spec and builds on the amazing work of 
 - Simple APIs for ingesting, packaging, and playback
 
 ## Initial Platform Targets
-- Web-based Smart TV apps (HTML5/JS)  
-- Samsung Tizen  
-- LG webOS  
-- Android TV / Google TV  
-- Roku (when feasible)
+- Web-based Smart TV apps (HTML5/JS) *coming soon*
+- Samsung Tizen *coming soon*
+- LG webOS *coming soon*
+- Android TV / Google TV *coming soon*
+- Roku (when feasible) *coming soon*
 
-## Project Structure (TODO)
+## Project Structure
 - `/docs` — design notes and integration guides  
 - `/server` — see Getting Started for instructions to use moq-relay  
 - `/clients`  
