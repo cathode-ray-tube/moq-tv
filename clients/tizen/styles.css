@@ -1,0 +1,20 @@
+:root{
+  --bg:#021021;
+  --panel:#001a24;
+  --accent:#06b6d4;
+  --accent-2:#00c2ff;
+  --muted:#9bdbe7;
+  --card:#062634;
+  --text:#e6fbff;
+}
+html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#001020,#000814);color:var(--text)}
+.app {display:flex;gap:20px;padding:20px;box-sizing:border-box;height:100vh}
+.left {width:260px}
+.main {flex:1;display:flex;flex-direction:column;gap:12px}
+.header{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:12px;background:rgba(255,255,255,0.02)}
+.topbar{display:flex;gap:12px;align-items:center}
+.grid-wrap{padding:10px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.2));border-radius:12px;flex:1;overflow:auto}
+.search-row{display:flex;gap:10px;align-items:center}
+.footer-right{display:flex;align-items:center;gap:12px;color:var(--muted)}
+
+moq-video-tile[focused] .card, .item[focused]{box-shadow:0 6px 20px rgba(6,182,212,0.12)}
