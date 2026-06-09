@@ -1,11 +1,11 @@
 /* Main wiring for demo app — updated to use player overlay and ARIA/navigation */
-import './components/url-port-input.js';
-import './components/sidebar-menu.js';
-import './components/video-grid.js';
-import './components/video-tile.js';
-import './components/icon-bar.js';
-import './components/navigation.js';
-import './components/player-overlay.js';
+import '../components/url-port-input.js';
+import '../components/sidebar-menu.js';
+import '../components/video-grid.js';
+import '../components/video-tile.js';
+import '../components/icon-bar.js';
+import '../components/navigation.js';
+import '../components/player-overlay.js';
 
 const sidebar = document.getElementById('sidebar') as any;
 sidebar.itemsList = [
