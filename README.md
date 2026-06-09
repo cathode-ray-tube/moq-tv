@@ -1,6 +1,6 @@
 # moq-tv
 
-![moq tv logo](./assets/moq-tv-navy.jpeg)
+![moq tv logo](./assets/moq-tv-design.jpeg)
 
 **[moq-tv](https://github.com/cathode-ray-tube/moq-tv)** is a project to bring Media over QUIC (MoQ) to Smart TVs — focused on low-latency broadcasting and smooth viewer experience for live streams.
 
@@ -62,8 +62,8 @@ This project is dual-licensed: MIT OR Apache-2.0, choose either. See `LICENSE-MI
 - Mid-term: platform-specific optimizations (Tizen, webOS) and tooling for packaging.
 - Long-term: reference broadcaster tools, SDKs, and a compliance test suite for Smart TV vendors.
 
-![moq tv logo](./assets/moq-tv-design.jpeg)
-
 ## Contact
     
 Questions/pull requests welcome, particularly for any currently-unsupported platform.
+
+![moq tv logo](./assets/moq-tv-navy.jpeg)
