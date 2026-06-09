@@ -62,6 +62,8 @@ This project is dual-licensed: MIT OR Apache-2.0, choose either. See `LICENSE-MI
 - Mid-term: platform-specific optimizations (Tizen, webOS) and tooling for packaging.
 - Long-term: reference broadcaster tools, SDKs, and a compliance test suite for Smart TV vendors.
 
+![moq tv logo](./assets/moq-tv-design.jpeg)
+
 ## Contact
     
 Questions/pull requests welcome, particularly for any currently-unsupported platform.
