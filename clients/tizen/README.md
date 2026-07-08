@@ -14,8 +14,8 @@ npm run dev
 
 Open the URL printed by the dev server, then use:
 
-Arrow keys to move focus
-Enter/OK to activate a focused element
+- Arrow keys to move focus
+- Enter/OK to activate a focused element
 
 ### Core layout
 
