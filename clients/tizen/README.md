@@ -23,13 +23,13 @@ Enter/OK to activate a focused element
 
 ## UI components (custom HTML elements)
 
-- `<sidebar-menu>`: left menu; dispatches sidebar:select
-- `<icon-bar>`: top bar styling
-- `<url-port-input>`: emits source:update
-- `<video-grid>`: renders <video-tile> items into tv-grid
-- `<player-overlay>`: plays the selected tile’s video
-- `<video-tile>`: emits tile:select on activate
-- `<samsung-navigation>`: remote/keyboard-style focus navigation
+*`<sidebar-menu>`: left menu; dispatches sidebar:select
+*`<icon-bar>`: top bar styling
+*`<url-port-input>`: emits source:update
+*`<video-grid>`: renders <video-tile> items into tv-grid
+*`<player-overlay>`: plays the selected tile’s video
+*`<video-tile>`: emits tile:select on activate
+*`<samsung-navigation>`: remote/keyboard-style focus navigation
 
 ### Wiring (how it works)
 
