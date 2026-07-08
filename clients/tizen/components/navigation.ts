@@ -1,102 +1,71 @@
-/* Navigation component: remote handling and focus management with ARIA + Tizen keys */
-type FocusableItem = { el: HTMLElement; row?: number; col?: number };
+const TAG = "samsung-navigation";
 
-export class MoqNavigation extends HTMLElement {
-  private items: FocusableItem[] = [];
-  private currentIndex = 0;
+type Focusable = HTMLElement & { activate?: () => void };
+
+class SamsungNavigation extends HTMLElement {
+  private root?: HTMLElement;
+  private focusables: Focusable[] = [];
+  private idx = 0;
 
   constructor() {
     super();
-    this.attachShadow({ mode: 'open' });
-    this.shadowRoot!.innerHTML = `<style>:host{display:none}</style><slot></slot>`;
-    this.handleKey = this.handleKey.bind(this);
+    this.style.display = "none";
   }
 
   connectedCallback() {
-    window.addEventListener('keydown', this.handleKey);
+    // discover focusables
+    this.refresh();
+    window.addEventListener("keydown", this.onKeyDown);
+    // initial focus
+    requestAnimationFrame(() => this.focusCurrent());
   }
 
   disconnectedCallback() {
-    window.removeEventListener('keydown', this.handleKey);
+    window.removeEventListener("keydown", this.onKeyDown);
   }
 
-  registerFocusable(el: HTMLElement) {
-    if (!this.items.find(i => i.el === el)) {
-      this.items.push({ el });
-      el.tabIndex = -1;
-      el.setAttribute('role', el.getAttribute('role') || 'button');
-      el.setAttribute('aria-hidden', 'false');
-    }
+  private refresh() {
+    const all = Array.from(document.querySelectorAll<Focusable>("[data-focusable='true']"));
+    this.focusables = all;
+    this.idx = Math.min(this.idx, Math.max(0, this.focusables.length - 1));
   }
 
-  focusItem(index: number) {
-    if (index < 0 || index >= this.items.length) return;
-    const prev = this.items[this.currentIndex];
-    if (prev) {
-      prev.el.removeAttribute('aria-current');
-      prev.el.removeAttribute('focused');
-    }
-    this.currentIndex = index;
-    const cur = this.items[this.currentIndex];
-    cur.el.setAttribute('focused', '');
-    cur.el.setAttribute('aria-current', 'true');
-    try { cur.el.focus(); } catch {}
-    this.dispatchEvent(new CustomEvent('moqtv:focus-change', { detail: { index } }));
-  }
-
-  private handleKey(e: KeyboardEvent) {
-    const key = e.key || '';
-    const code = (e as any).keyCode || 0;
-    const BACK_KEYS = new Set(['Backspace','SoftLeft','Escape']);
-    const isBack = BACK_KEYS.has(key) || code === 10009;
-
-    if (this.items.length === 0) {
-      if (isBack) this.dispatchEvent(new Event('moqtv:back'));
-      return;
-    }
-
-    if (key === 'ArrowRight' || code === 39) {
-      this.move(1);
-      e.preventDefault();
-    } else if (key === 'ArrowLeft' || code === 37) {
-      this.move(-1);
-      e.preventDefault();
-    } else if (key === 'ArrowDown' || code === 40) {
-      this.moveRow(1);
-      e.preventDefault();
-    } else if (key === 'ArrowUp' || code === 38) {
-      this.moveRow(-1);
-      e.preventDefault();
-    } else if (key === 'Enter' || code === 13 || code === 417) {
-      const cur = this.items[this.currentIndex];
-      cur.el.dispatchEvent(new Event('click'));
-      e.preventDefault();
-    } else if (isBack) {
-      this.dispatchEvent(new Event('moqtv:back'));
-      e.preventDefault();
-    }
+  private focusCurrent() {
+    if (this.focusables.length === 0) return;
+    this.focusables[this.idx]?.focus?.();
   }
 
   private move(delta: number) {
-    const next = Math.min(this.items.length - 1, Math.max(0, this.currentIndex + delta));
-    this.focusItem(next);
+    if (this.focusables.length === 0) return;
+    this.idx = (this.idx + delta + this.focusables.length) % this.focusables.length;
+    this.focusCurrent();
   }
 
-  private moveRow(deltaRow: number) {
-    const current = this.items[this.currentIndex];
-    const box = current.el.getBoundingClientRect();
-    const yTarget = box.top + deltaRow * box.height;
-    let bestIndex = this.currentIndex;
-    let bestDist = Infinity;
-    for (let i = 0; i < this.items.length; i++) {
-      const b = this.items[i].el.getBoundingClientRect();
-      const dy = Math.abs(b.top - yTarget);
-      const dx = Math.abs(b.left - box.left);
-      const dist = dy * 4 + dx;
-      if (dist < bestDist) { bestDist = dist; bestIndex = i; }
+  private onKeyDown = (e: KeyboardEvent) => {
+    const key = e.key;
+
+    // TV remote keys often map to arrows, Enter, Back/Return
+    if (key === "ArrowRight" || key === "ArrowDown") {
+      e.preventDefault();
+      this.move(1);
+    } else if (key === "ArrowLeft" || key === "ArrowUp") {
+      e.preventDefault();
+      this.move(-1);
+    } else if (key === "Enter" || key === "OK" || key === "Return") {
+      e.preventDefault();
+      const el = this.focusables[this.idx];
+      el?.activate?.();
+    } else if (key === "Escape" || key === "Backspace") {
+      // Optional: allow back to close overlays if any exist
+      const overlay = document.querySelector("player-overlay") as any;
+      overlay?.close?.();
+    } else {
+      // Optional: refresh on-demand if dynamic tiles change
+      // (cheap and avoids missing newly added elements)
+      if (this.focusables.length === 0) this.refresh();
     }
-    this.focusItem(bestIndex);
-  }
+  };
 }
 
-customElements.define('moq-navigation', MoqNavigation);
+customElements.define(TAG, SamsungNavigation);
+export { SamsungNavigation };
