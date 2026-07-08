@@ -1,122 +1,102 @@
-/* Player overlay/modal component.
-   Exposes methods:
-     - open({title, src, metadata})
-     - close()
-   Emits events: moqtv:opened, moqtv:closed, moqtv:play, moqtv:pause, moqtv:stop
-   Note: Demo uses native <video>. Replace with moq QUIC integration.
-*/
-export interface PlayerOptions {
-  id?: string;
-  title?: string;
-  src?: string; // for demo only
-  metadata?: any;
-}
+const TAG = "player-overlay";
 
-export class PlayerOverlay extends HTMLElement {
-  private container!: HTMLElement;
-  private videoEl!: HTMLVideoElement;
-  private titleEl!: HTMLElement;
-  private visible = false;
+type PlayRequest = {
+  src: string;
+  title?: string;
+  poster?: string;
+};
+
+class PlayerOverlay extends HTMLElement {
+  private video?: HTMLVideoElement;
+  private container?: HTMLElement;
+  private current?: PlayRequest;
 
   constructor() {
     super();
-    const s = this.attachShadow({ mode: 'open' });
-    s.innerHTML = `
-      <style>
-        :host{position:fixed;inset:0;display:none;align-items:center;justify-content:center;font-family:inherit;z-index:9999}
-        .backdrop{position:absolute;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px)}
-        .panel{position:relative;background:linear-gradient(180deg,#001826,#001018);width:84vw;height:72vh;border-radius:12px;padding:14px;box-sizing:border-box;display:flex;flex-direction:column;gap:10px;box-shadow:0 20px 60px rgba(0,0,0,0.6)}
-        .header{display:flex;justify-content:space-between;align-items:center;color:var(--text)}
-        .title{font-weight:700;font-size:18px}
-        .controls{display:flex;gap:8px;align-items:center}
-        .btn{background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:8px;color:var(--text);cursor:pointer}
-        .player{flex:1;background:#000;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center}
-        video{width:100%;height:100%;object-fit:cover;background:#000}
-      </style>
-      <div class="backdrop" id="backdrop" role="presentation"></div>
-      <div class="panel" role="dialog" aria-modal="true" aria-label="Player dialog">
-        <div class="header">
-          <div class="title" id="title">Player</div>
-          <div class="controls">
-            <div class="btn" id="play" role="button" tabindex="0" aria-label="Play">▶️</div>
-            <div class="btn" id="pause" role="button" tabindex="0" aria-label="Pause">⏸️</div>
-            <div class="btn" id="stop" role="button" tabindex="0" aria-label="Stop">⏹️</div>
-            <div class="btn" id="close" role="button" tabindex="0" aria-label="Close">✖</div>
+    this.style.display = "block";
+    this.style.opacity = "0";
+    this.style.pointerEvents = "none";
+    this.style.transition = "opacity 160ms ease";
+  }
+
+  connectedCallback() {
+    this.innerHTML = `
+      <div class="overlay-bg" part="bg">
+        <div class="overlay-panel" part="panel">
+          <div class="overlay-header">
+            <div class="overlay-title" part="title"></div>
+            <button class="overlay-close" part="close" type="button">✕</button>
           </div>
-        </div>
-        <div class="player" id="player">
-          <video id="video" controls></video>
+          <video class="overlay-video" part="video" controls playsinline></video>
         </div>
       </div>
     `;
 
-    this.handleKey = this.handleKey.bind(this);
+    this.container = this;
+    const bg = this.querySelector(".overlay-bg") as HTMLElement;
+    const panel = this.querySelector(".overlay-panel") as HTMLElement;
+
+    // Basic overlay styling (tuned to screenshot aesthetic)
+    panel.style.background = "linear-gradient(180deg, rgba(12,34,74,.92), rgba(5,11,24,.92))";
+    panel.style.border = "1px solid rgba(255,255,255,.14)";
+    panel.style.borderRadius = "18px";
+    panel.style.boxShadow = "0 0 0 1px rgba(255,255,255,.06), 0 26px 60px rgba(0,0,0,.6)";
+
+    const titleEl = this.querySelector(".overlay-title") as HTMLElement;
+    const closeBtn = this.querySelector(".overlay-close") as HTMLButtonElement;
+
+    this.video = this.querySelector("video") as HTMLVideoElement;
+
+    closeBtn.addEventListener("click", () => this.close());
+    bg.addEventListener("click", (ev) => {
+      if (ev.target === bg) this.close();
+    });
+
+    // Expose for other components
+    (this as any).playRequest = (req: PlayRequest) => this.play(req);
+    if (titleEl) titleEl.textContent = "";
   }
 
-  connectedCallback() {
-    this.container = this.shadowRoot!.host as unknown as HTMLElement;
-    this.videoEl = this.shadowRoot!.getElementById('video') as HTMLVideoElement;
-    this.titleEl = this.shadowRoot!.getElementById('title') as HTMLElement;
+  play(req: PlayRequest) {
+    this.current = req;
+    this.style.opacity = "1";
+    this.style.pointerEvents = "auto";
 
-    this.shadowRoot!.getElementById('play')!.addEventListener('click', () => { this.play(); });
-    this.shadowRoot!.getElementById('pause')!.addEventListener('click', () => { this.pause(); });
-    this.shadowRoot!.getElementById('stop')!.addEventListener('click', () => { this.stop(); });
-    this.shadowRoot!.getElementById('close')!.addEventListener('click', () => { this.close(); });
-    this.shadowRoot!.getElementById('backdrop')!.addEventListener('click', () => this.close());
+    const titleEl = this.querySelector(".overlay-title") as HTMLElement;
+    if (titleEl) titleEl.textContent = req.title ?? "";
 
-    window.addEventListener('keydown', this.handleKey);
-    this.videoEl.addEventListener('play', () => this.dispatchEvent(new Event('moqtv:play')));
-    this.videoEl.addEventListener('pause', () => this.dispatchEvent(new Event('moqtv:pause')));
-    this.videoEl.addEventListener('ended', () => this.dispatchEvent(new Event('moqtv:stop')));
-  }
+    if (!this.video) return;
+    if (req.poster) this.video.poster = req.poster;
+    this.video.src = req.src;
 
-  disconnectedCallback() {
-    window.removeEventListener('keydown', this.handleKey);
-  }
+    this.video
+      .play()
+      .catch(() => {
+        // some devices require user gesture; dev can handle if needed
+      });
 
-  async open(opts: PlayerOptions) {
-    this.visible = true;
-    (this.shadowRoot!.host as HTMLElement).style.display = 'flex';
-    this.titleEl.textContent = opts.title || 'Live';
-    if (opts.src) {
-      this.videoEl.src = opts.src;
-      try { await this.videoEl.play(); } catch {}
-    }
-    this.dispatchEvent(new CustomEvent('moqtv:opened', { detail: opts }));
-    const playBtn = this.shadowRoot!.getElementById('play') as HTMLElement;
-    try { playBtn.focus(); } catch {}
+    // Focus close button for remote navigation
+    closeBtnFocusSoon(this);
   }
 
   close() {
-    this.visible = false;
-    try { this.videoEl.pause(); } catch {}
-    this.videoEl.src = '';
-    (this.shadowRoot!.host as HTMLElement).style.display = 'none';
-    this.dispatchEvent(new Event('moqtv:closed'));
-  }
-
-  play() { this.videoEl.play(); }
-  pause() { this.videoEl.pause(); }
-  stop() { this.videoEl.pause(); this.videoEl.currentTime = 0; }
-
-  private handleKey(e: KeyboardEvent) {
-    const key = e.key || '';
-    const code = (e as any).keyCode || 0;
-    if (!this.visible) return;
-    if (key === 'Enter' || code === 13) {
-      if (this.videoEl.paused) this.play(); else this.pause();
-      e.preventDefault();
-    } else if ((key === 'Backspace' || key === 'SoftLeft' || code === 10009 || key === 'Escape')) {
-      this.close();
-      e.preventDefault();
-    } else if (key === 'ArrowLeft') {
-      this.videoEl.currentTime = Math.max(0, this.videoEl.currentTime - 5);
-      e.preventDefault();
-    } else if (key === 'ArrowRight') {
-      this.videoEl.currentTime = Math.min(this.videoEl.duration || Infinity, this.videoEl.currentTime + 5);
-      e.preventDefault();
+    this.style.opacity = "0";
+    this.style.pointerEvents = "none";
+    if (this.video) {
+      this.video.pause();
+      this.video.removeAttribute("src");
+      this.video.load();
     }
+    this.current = undefined;
   }
 }
 
-customElements.define('moq-player-overlay', PlayerOverlay);
+function closeBtnFocusSoon(el: HTMLElement) {
+  requestAnimationFrame(() => {
+    const btn = el.querySelector(".overlay-close") as HTMLElement | null;
+    btn?.focus?.();
+  });
+}
+
+customElements.define(TAG, PlayerOverlay);
+export { PlayerOverlay };
