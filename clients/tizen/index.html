@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Smart TV App (Tizen)</title>
+    <link rel="stylesheet" href="./styles/app.css" />
+  </head>
+  <body>
+    <app-root>
+      <samsung-navigation></samsung-navigation>
+
+      <div class="layout">
+        <sidebar-menu></sidebar-menu>
+
+        <main class="main">
+          <icon-bar></icon-bar>
+
+          <player-overlay></player-overlay>
+
+          <url-port-input></url-port-input>
+
+          <video-grid></video-grid>
+        </main>
+      </div>
+
+      <!-- tv-grid is the lynchpin for devs -->
+      <tv-grid
+        id="rootGrid"
+        aspect="16:9"
+        design-width="1280"
+        design-height="720"
+        rows="6"
+        cols="8"
+      ></tv-grid>
+    </app-root>
+
+    <script type="module" src="./index.js"></script>
+  </body>
+</html>
