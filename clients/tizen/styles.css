@@ -1,0 +1,102 @@
+:root{
+  --bg0:#050b18;
+  --bg1:#07122a;
+  --panel:#0b1a3a;
+  --panel2:#0c224a;
+  --stroke: rgba(255,255,255,.10);
+  --stroke2: rgba(255,255,255,.16);
+  --text:#dbe8ff;
+  --muted:#8fb3ff;
+
+  /* “image-matching” knobs: adjust these until it matches your screenshot exactly */
+  --radius-lg: 14px;
+  --radius-md: 10px;
+  --shadow: 0 0 0 1px rgba(255,255,255,.06), 0 12px 30px rgba(0,0,0,.55);
+
+  --focus: #4fb5ff;
+  --focus2: rgba(79,181,255,.35);
+
+  /* Layout scale derived from tv-grid; these are overwritten by tv-grid */
+  --scale: 1;
+  --grid-left: 0px;
+  --grid-top: 0px;
+  --grid-width: 1280px;
+  --grid-height: 720px;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background:
+    radial-gradient(1200px 800px at 65% 20%, rgba(35,150,255,.18), transparent 55%),
+    radial-gradient(900px 600px at 10% 85%, rgba(60,190,255,.10), transparent 60%),
+    linear-gradient(180deg, var(--bg1), var(--bg0));
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text);
+  overflow: hidden; /* TV apps usually want no scroll */
+}
+
+app-root{
+  display:block;
+  height:100%;
+  width:100%;
+}
+
+.layout{
+  height:100%;
+  width:100%;
+  display:flex;
+  align-items:stretch;
+}
+
+.sidebar {
+  width: 240px;
+}
+
+.main{
+  flex:1;
+  padding: 18px 22px;
+  position: relative;
+}
+
+/* Generic buttons */
+button, .btn {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 10px;
+  color: var(--text);
+}
+
+:focus { outline: none; }
+:focus-visible{
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* ---- Sidebar menu ---- */
+sidebar-menu{
+  width: 260px;
+  padding: 14px 12px;
+}
+
+/* ---- Icon bar ---- */
+icon-bar{
+  display:block;
+  margin: 10px 0 14px 0;
+}
+
+/* ---- Video grid panel ---- */
+video-grid{
+  display:block;
+  position: relative;
+  height: 70vh;
+  min-height: 420px;
+}
+
+/* ---- Overlay ---- */
+player-overlay{
+  position:absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+}
