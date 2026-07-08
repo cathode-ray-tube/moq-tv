@@ -8,6 +8,7 @@ A responsive 16:9 (1280×720 design) TV layout using a custom `tv-grid` element,
 ```bash
 npm install
 npm run dev
+```
 
 ## 2) Open
 
@@ -16,11 +17,12 @@ Open the URL printed by the dev server, then use:
     Arrow keys to move focus
     Enter/OK to activate a focused element
 
-## Core layout
+
+### Core layout
 
     <tv-grid>: the lynchpin layout engine (16:9 only). It scales to fit the device and provides a developer API to place elements into “TV blocks”.
 
-## UI components (custom elements)
+### UI components (custom elements)
 
     <sidebar-menu>: left menu; dispatches sidebar:select
     <icon-bar>: top bar styling
@@ -30,7 +32,7 @@ Open the URL printed by the dev server, then use:
     <video-tile>: emits tile:select on activate
     <samsung-navigation>: remote/keyboard-style focus navigation
 
-## Wiring (how it works)
+### Wiring (how it works)
 
 In index.html, the key elements are:
 
@@ -38,7 +40,7 @@ In index.html, the key elements are:
     <video-grid></video-grid> (it looks up #rootGrid and places tiles via tvGrid.grid.include())
 
 ### Dev API: tv-grid placements
-
+```js
 const tvGrid = document.getElementById("rootGrid");
 
 // Place an element into a TV block
