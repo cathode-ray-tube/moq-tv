@@ -1,82 +1,177 @@
-/* Single video tile / thumbnail (ARIA added) */
-export interface VideoTileData {
+const TAG = "video-tile";
+
+export type VideoTileData = {
   id: string;
   title: string;
-  description?: string;
-  thumbnail?: string;
-  latencyMs?: number;
-  live?: boolean;
-}
+  subtitle?: string;
+  badge?: string;
+  thumbColor?: string;
+  src?: string; // media src
+  poster?: string;
+};
 
-export class VideoTile extends HTMLElement {
-  data: VideoTileData | null = null;
-  onClick: ((data: VideoTileData) => void) | null = null;
+class VideoTile extends HTMLElement {
+  static get observedAttributes() {
+    return ["data-id", "data-title", "data-subtitle", "data-badge", "data-src", "data-poster", "data-color"];
+  }
+
+  private data: VideoTileData | null = null;
 
   constructor() {
     super();
-    const s = this.attachShadow({ mode: 'open' });
-    s.innerHTML = `
-      <style>
-        :host{display:block;box-sizing:border-box;font-family:inherit}
-        .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.2));border-radius:12px;padding:10px;color:#e6fbff;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,0.04)}
-        .thumb{width:100%;height:120px;background:#071826;border-radius:8px;background-size:cover;background-position:center}
-        .meta{padding-top:8px}
-        .title{font-weight:700;font-size:14px}
-        .desc{font-size:12px;color:#9bdbe7;margin-top:4px;opacity:0.9}
-        .badge{position:absolute;left:10px;top:10px;background:#ff385c;color:white;padding:4px 8px;border-radius:8px;font-size:12px}
-        .lat{position:absolute;right:10px;top:10px;background:rgba(10,30,40,0.6);color:#bfe9f3;padding:4px 8px;border-radius:8px;font-size:12px}
-        :host([focused]) .card {outline:2px solid rgba(6,182,212,0.9);transform:scale(1.02);transition:transform .12s}
-      </style>
-      <div class="card" id="card" tabindex="-1" role="button" aria-label="">
-        <div class="thumb" id="thumb" role="img" aria-label="thumbnail"></div>
-        <div class="meta">
-          <div class="title" id="title"></div>
-          <div class="desc" id="desc"></div>
-        </div>
-        <div id="liveBadge" class="badge" style="display:none" aria-hidden="true">LIVE</div>
-        <div id="lat" class="lat" style="display:none" aria-hidden="true"></div>
-      </div>
-    `;
-    this.handleClick = this.handleClick.bind(this);
+    this.tabIndex = 0;
+    this.setAttribute("data-focusable", "true");
   }
 
   connectedCallback() {
-    this.shadowRoot!.getElementById('card')!.addEventListener('click', this.handleClick);
-    this.shadowRoot!.getElementById('card')!.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') this.handleClick();
-    });
+    this.render();
+    (this as any).activate = () => this.activate();
   }
 
-  disconnectedCallback() {
-    this.shadowRoot!.getElementById('card')!.removeEventListener('click', this.handleClick);
-  }
-
-  set dataValue(d: VideoTileData | null) {
-    this.data = d;
+  attributeChangedCallback() {
+    this.readFromAttributes();
     this.render();
   }
 
-  private render() {
-    if (!this.data) return;
-    const s = this.shadowRoot!;
-    const thumb = s.getElementById('thumb') as HTMLDivElement;
-    thumb.style.backgroundImage = this.data.thumbnail ? `url(${this.data.thumbnail})` : '';
-    s.getElementById('title')!.textContent = this.data.title;
-    s.getElementById('desc')!.textContent = this.data.description || '';
-    const liveBadge = s.getElementById('liveBadge')!;
-    const lat = s.getElementById('lat')!;
-    if (this.data.live) { liveBadge.style.display = 'block'; } else { liveBadge.style.display = 'none'; }
-    if (this.data.latencyMs != null) { lat.style.display = 'block'; lat.textContent = `${this.data.latencyMs} ms`; } else { lat.style.display = 'none'; }
-    // ARIA label
-    const card = s.getElementById('card')!;
-    const aria = `${this.data.title}. ${this.data.description || ''} ${this.data.live ? 'Live.' : ''} ${this.data.latencyMs ? this.data.latencyMs + ' milliseconds latency.' : ''}`;
-    card.setAttribute('aria-label', aria);
+  private readFromAttributes() {
+    const id = this.getAttribute("data-id") ?? "";
+    const title = this.getAttribute("data-title") ?? "";
+    const subtitle = this.getAttribute("data-subtitle") ?? "";
+    const badge = this.getAttribute("data-badge") ?? "";
+    const src = this.getAttribute("data-src") ?? undefined;
+    const poster = this.getAttribute("data-poster") ?? undefined;
+    const thumbColor = this.getAttribute("data-color") ?? "#1a3d8f";
+
+    this.data = { id, title, subtitle, badge, src, poster, thumbColor };
   }
 
-  private handleClick() {
-    if (this.data && this.onClick) this.onClick(this.data);
-    this.dispatchEvent(new CustomEvent('moqtv:select', { detail: this.data }));
+  private render() {
+    this.readFromAttributes();
+    const d = this.data;
+    if (!d) return;
+
+    // A stylized tile approximating your screenshot’s “live card” look.
+    // Pixel-perfect matching: tweak CSS variables in this component.
+    const badgeText = d.badge ? d.badge : "LIVE";
+
+    this.innerHTML = `
+      <div class="tile" part="tile" style="--thumb:${d.thumbColor ?? "#1a3d8f"};">
+        <div class="tile-media"></div>
+        <div class="tile-badge">${badgeText}</div>
+
+        <div class="tile-text">
+          <div class="tile-title">${escapeHtml(d.title)}</div>
+          ${d.subtitle ? `<div class="tile-sub">${escapeHtml(d.subtitle)}</div>` : ``}
+        </div>
+
+        <div class="tile-border"></div>
+      </div>
+    `;
+
+    const style = document.createElement("style");
+    style.textContent = `
+      .tile{
+        width:100%; height:100%;
+        position:relative;
+        border-radius: 12px;
+        overflow:hidden;
+        background: rgba(255,255,255,.03);
+        border: 1px solid rgba(255,255,255,.12);
+        box-shadow: 0 0 0 1px rgba(255,255,255,.05);
+        transform: translateZ(0);
+      }
+
+      .tile-media{
+        position:absolute; inset:0;
+        background:
+          radial-gradient(600px 220px at 20% 20%, rgba(70,180,255,.40), transparent 55%),
+          radial-gradient(420px 260px at 80% 80%, rgba(255,70,180,.20), transparent 60%),
+          linear-gradient(135deg, rgba(0,0,0,.25), rgba(0,0,0,.65)),
+          linear-gradient(180deg, rgba(255,255,255,.06), transparent),
+          var(--thumb);
+        filter: saturate(1.15) contrast(1.05);
+      }
+
+      .tile-badge{
+        position:absolute;
+        top: 8px;
+        left: 10px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-weight: 900;
+        font-size: 11px;
+        letter-spacing: .3px;
+        color: rgba(255,255,255,.95);
+        background: rgba(255,0,80,.18);
+        border: 1px solid rgba(255,0,120,.35);
+        box-shadow: 0 0 0 3px rgba(255,0,90,.10);
+      }
+
+      .tile-text{
+        position:absolute;
+        left: 12px;
+        right: 12px;
+        bottom: 10px;
+      }
+      .tile-title{
+        font-weight: 900;
+        font-size: 13px;
+        line-height: 1.2;
+        color: rgba(219,232,255,.98);
+        text-shadow: 0 2px 8px rgba(0,0,0,.55);
+      }
+      .tile-sub{
+        margin-top: 4px;
+        font-size: 11px;
+        color: rgba(143,179,255,.95);
+        text-shadow: 0 2px 8px rgba(0,0,0,.55);
+      }
+
+      .tile-border{
+        position:absolute; inset:0;
+        border-radius: 12px;
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+        pointer-events:none;
+      }
+
+      /* Focus ring */
+      :host(:focus-visible){
+        outline: none;
+      }
+      :host(:focus-visible) .tile{
+        border-color: rgba(79,181,255,.75);
+        box-shadow:
+          0 0 0 3px rgba(79,181,255,.22),
+          0 18px 40px rgba(0,0,0,.55);
+      }
+    `;
+    this.appendChild(style);
+  }
+
+  private activate() {
+    if (!this.data) return;
+    // emit selection so video-grid can open player-overlay
+    this.dispatchEvent(
+      new CustomEvent("tile:select", {
+        detail: this.data,
+        bubbles: true
+      })
+    );
   }
 }
 
-customElements.define('moq-video-tile', VideoTile);
+function escapeHtml(s: string) {
+  return s.replace(/[&<>"']/g, (c) => {
+    switch (c) {
+      case "&": return "&amp;";
+      case "<": return "&lt;";
+      case ">": return "&gt;";
+      case '"': return "&quot;";
+      case "'": return "&#39;";
+      default: return c;
+    }
+  });
+}
+
+customElements.define(TAG, VideoTile);
+export { VideoTile };
