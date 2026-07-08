@@ -39,20 +39,23 @@ In index.html, the key elements are:
     <video-grid></video-grid> (it looks up #rootGrid and places tiles via tvGrid.grid.include())
 
 ### Dev API: tv-grid placements
-
+```
 const tvGrid = document.getElementById("rootGrid");
 
 #### Place an element into a TV block:
-
+```
 vGrid.grid.include(myEl, { row: 0, col: 1, rowSpan: 1, colSpan: 2 });
 
 #### Remove:
+```
 tvGrid.grid.exclude(myEl);
 
 #### Clear all placed elements:
+```
 tvGrid.grid.clear();
 
 #### Helpers:
+```
 tvGrid.grid.getCellRect({ row: 0, col: 0, rowSpan: 1, colSpan: 1 });
 
 #### Customize the tile layout
@@ -60,7 +63,7 @@ tvGrid.grid.getCellRect({ row: 0, col: 0, rowSpan: 1, colSpan: 1 });
 Edit /components/video-grid.ts and update the cellMap used for placing tiles into tv-grid.
  
 #### Play a video (from a tile selection)
-
-video-tile emits tile:select, and video-grid calls:
+```
+// video-tile emits tile:select, and video-grid calls:
 
 playerOverlay.play({ src, title, poster });
