@@ -14,29 +14,29 @@ npm run dev
 
 Open the URL printed by the dev server, then use:
 
-    Arrow keys to move focus
-    Enter/OK to activate a focused element
+Arrow keys to move focus
+Enter/OK to activate a focused element
 
 ### Core layout
 
-    <tv-grid>: the lynchpin layout engine (16:9 only). It scales to fit the device and provides a developer API to place elements into “TV blocks”.
+`<tv-grid>`: the lynchpin layout engine (16:9 only). It scales to fit the device and provides a developer API to place elements into “TV blocks”.
 
 ## UI components (custom HTML elements)
 
-    <sidebar-menu>: left menu; dispatches sidebar:select
-    <icon-bar>: top bar styling
-    <url-port-input>: emits source:update
-    <video-grid>: renders <video-tile> items into tv-grid
-    <player-overlay>: plays the selected tile’s video
-    <video-tile>: emits tile:select on activate
-    <samsung-navigation>: remote/keyboard-style focus navigation
+`<sidebar-menu>`: left menu; dispatches sidebar:select
+`<icon-bar>`: top bar styling
+`<url-port-input>`: emits source:update
+`<video-grid>`: renders <video-tile> items into tv-grid
+`<player-overlay>`: plays the selected tile’s video
+`<video-tile>`: emits tile:select on activate
+`<samsung-navigation>`: remote/keyboard-style focus navigation
 
 ### Wiring (how it works)
 
 In index.html, the key elements are:
 
-    <tv-grid id="rootGrid" ...></tv-grid>
-    <video-grid></video-grid> (it looks up #rootGrid and places tiles via tvGrid.grid.include())
+`<tv-grid id="rootGrid" ...></tv-grid>`
+`<video-grid></video-grid>` (it looks up #rootGrid and places tiles via `tvGrid.grid.include()`)
 
 ### Dev API: tv-grid placements
 ```js
