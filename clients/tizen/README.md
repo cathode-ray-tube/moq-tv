@@ -1,4 +1,4 @@
-# Moq-TV Samsung Tizen TV Starter (TypeScript + Custom Elements)
+# Moq-TV Samsung Tizen
 
 A responsive 16:9 (1280×720 design) TV layout using a custom `tv-grid` element, plus tiles, navigation, and a video overlay.
 
@@ -21,7 +21,7 @@ Open the URL printed by the dev server, then use:
 
     <tv-grid>: the lynchpin layout engine (16:9 only). It scales to fit the device and provides a developer API to place elements into “TV blocks”.
 
-## UI components (custom elements)
+## UI components (custom HTML elements)
 
     <sidebar-menu>: left menu; dispatches sidebar:select
     <icon-bar>: top bar styling
