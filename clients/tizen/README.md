@@ -17,6 +17,8 @@ Open the URL printed by the dev server, then use:
 - Arrow keys to move focus
 - Enter/OK to activate a focused element
 
+# Development
+
 ### Core layout
 
 `<tv-grid>`: the lynchpin layout engine (16:9 only). It scales to fit the device and provides a developer API to place elements into “TV blocks”.
