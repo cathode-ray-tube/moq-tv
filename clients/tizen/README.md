@@ -46,7 +46,7 @@ const tvGrid = document.getElementById("rootGrid");
 ```
 #### Place an element into a TV block:
 ```js
-vGrid.grid.include(myEl, { row: 0, col: 1, rowSpan: 1, colSpan: 2 });
+tvGrid.grid.include(myEl, { row: 0, col: 1, rowSpan: 1, colSpan: 2 });
 ```
 #### Remove:
 ```js
