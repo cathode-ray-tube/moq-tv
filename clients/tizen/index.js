@@ -1,11 +1,11 @@
-import "./components/tv-grid.js";
-import "./components/navigation.js";
-import "./components/player-overlay.js";
-import "./components/sidebar-menu.js";
-import "./components/url-port-input.js";
-import "./components/icon-bar.js";
-import "./components/video-tile.js";
-import "./components/video-grid.js";
+import "./components/tv-grid.ts";
+import "./components/navigation.ts";
+import "./components/player-overlay.ts";
+import "./components/sidebar-menu.ts";
+import "./components/url-port-input.ts";
+import "./components/icon-bar.ts";
+import "./components/video-tile.ts";
+import "./components/video-grid.ts";
 
 window.addEventListener("DOMContentLoaded", () => {
   // Ensure tv-grid is laid out early
