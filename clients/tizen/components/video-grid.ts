@@ -2,7 +2,7 @@ const TAG = "video-grid";
 
 import type { VideoTileData } from "./video-tile.js";
 
-class videoGrid extends HTMLElement {
+class VideoGrid extends HTMLElement {
   private tiles: VideoTileData[] = [
     { id: "1", title: "GLOBAL NEWS", subtitle: "24/7 Breaking News", badge: "LIVE", thumbColor: "#0e3b8e", src: "https://example.com/video1.mp4" },
     { id: "2", title: "Premier League Live", subtitle: "FIFA ???", badge: "LIVE", thumbColor: "#0a2f6b", src: "https://example.com/video2.mp4" },
