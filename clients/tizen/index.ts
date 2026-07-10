@@ -1,4 +1,3 @@
-import "./components/tv-grid.ts";
 import "./components/navigation.ts";
 import "./components/player-overlay.ts";
 import "./components/sidebar-menu.ts";
