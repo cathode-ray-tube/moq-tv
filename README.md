@@ -2,7 +2,7 @@
 
 ![moq tv logo](./assets/moq-tv-design.jpeg)
 
-###Development paused to focus on [moq-sec](https://github.com/cathode-ray-tube/moq-sec), which will be used in this project###
+### Development paused to focus on [moq-sec](https://github.com/cathode-ray-tube/moq-sec), which will be used in this project ###
 
 **[moq-tv](https://github.com/cathode-ray-tube/moq-tv)** is a project to bring Media Over QUIC (MOQ) to Smart TVs — focused on low-latency broadcasting and smooth viewer experience for live streams.
 
