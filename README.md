@@ -68,4 +68,6 @@ This project is dual-licensed: MIT OR Apache-2.0, choose either. See `LICENSE-MI
     
 Questions/pull requests welcome, particularly for any currently-unsupported platform.
 
+### Development paused to focus on [moq-sec](https://github.com/cathode-ray-tube/moq-sec), which will be used in this project ###
+
 ![moq tv logo](./assets/moq-tv-navy.jpeg)
