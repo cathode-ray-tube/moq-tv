@@ -1,8 +1,6 @@
 # MOQ-TV
 
-![moq tv logo](./assets/moq-tv-design.jpeg)
-
-### Development paused to focus on [MOQ-Secure](https://github.com/cathode-ray-tube/moq-secure), which will be used in this project ###
+![moq tv logo](./assets/moq-tv.jpg)
 
 **MOQ-TV** is a project to bring Media Over QUIC (MOQ) to Smart TVs — focused on low-latency broadcasting and smooth viewer experience for live streams.
 
