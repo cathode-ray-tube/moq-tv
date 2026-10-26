@@ -18,9 +18,9 @@ This project implements the [moq-lite](https://github.com/moq-dev/moq) specifica
 - Simple APIs for ingesting, packaging, and playback
 
 ## Initial Platform Targets
-- Web-based Smart TV apps (HTML5/JS) - *coming soon*
+- **Web-based Smart TV apps (HTML5/JS)**
+- **LG webOS**
 - Samsung Tizen - *coming soon*
-- LG webOS - *coming soon*
 - Android TV / Google TV - *coming soon*
 - Roku (when feasible) - *coming soon*
 
