@@ -73,14 +73,14 @@ This project implements the [moq-lite](https://github.com/moq-dev/moq) specifica
    downloaded):
 
    ```bash
-   ares-install --device tv ./YOUR_PACKAGE_NAME.ipk
+   ares-install --device tv ./moqtv.ipk
    ```
 
 7. Launch the app using the app ID in the `id` field of
    [`clients/webos/appinfo.json`](clients/webos/appinfo.json):
 
    ```bash
-   ares-launch --device tv YOUR_APP_ID
+   ares-launch --device tv moqtv
    ```
 
 For packaging, Simulator setup, and troubleshooting, see
