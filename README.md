@@ -1,4 +1,4 @@
-# MOQ-TV
+# MoQ-TV
 
 ![moq tv logo](./assets/moq-tv.jpg)
 
