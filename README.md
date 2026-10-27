@@ -6,11 +6,6 @@
 
 This project implements the [moq-lite](https://github.com/moq-dev/moq) specification initially, with IETF compatability to be added later.
 
-## Goals
-- Provide a reference implementation for low-latency Media Over QUIC (MOQ) on Smart TV platforms.
-- Produce example apps for major Smart TV platforms that developers can run, study and modify.
-- Demonstrate best practices for adaptive streaming, synchronization and resiliency using MOQ.
-
 ## Key Features
 - Low-latency broadcasting with QUIC transport  
 - Reference/example applications for main Smart TV platforms (initial targets below)  
@@ -29,7 +24,7 @@ This project implements the [moq-lite](https://github.com/moq-dev/moq) specifica
 
 ## Project Structure
 - `/docs` — design notes and integration guides  
-- `/server` — see Getting Started for instructions to use moq-relay  
+- `/server` — see this for instructions to use moq-relay  
 - `/clients`  
   - `/web` — HTML5 reference player (should work on most web browsers, including Smart TV browsers)
   - `/tizen` — example Tizen app  
