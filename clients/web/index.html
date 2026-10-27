@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MoQ TV</title>
+
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #080b12;
+      color: #f4f6fb;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at 15% 0%, #172544 0, transparent 45%),
+        #080b12;
+    }
+
+    main {
+      width: min(1500px, 94vw);
+      margin: 0 auto;
+      padding: 4vh 0 36vh;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .mark {
+      display: grid;
+      place-items: center;
+      width: 58px;
+      height: 58px;
+      flex: 0 0 58px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #66e3c4, #538bff);
+      color: #071018;
+      font-size: 30px;
+      font-weight: 800;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(30px, 4vw, 48px);
+      letter-spacing: -1px;
+    }
+
+    .subtitle {
+      margin: 5px 0 0;
+      color: #9daac1;
+      font-size: 18px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .player-card,
+    .panel {
+      border: 1px solid #273248;
+      border-radius: 22px;
+      background: #101624;
+      box-shadow: 0 18px 60px #0006;
+    }
+
+    .player-card { padding: 14px; }
+
+    .screen {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border-radius: 14px;
+      background: radial-gradient(ellipse at center, #1c2b43, #070a10 72%);
+    }
+
+    moq-watch {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    moq-watch canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .placeholder {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-content: center;
+      gap: 12px;
+      text-align: center;
+      color: #b6c2d5;
+      pointer-events: none;
+    }
+
+    .play-icon {
+      color: #66e3c4;
+      font-size: 54px;
+    }
+
+    .placeholder strong { font-size: 22px; }
+
+    .placeholder span {
+      color: #8d9bb1;
+      font-size: 16px;
+    }
+
+    .player-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 4px 2px;
+      color: #aab5c8;
+      font-size: 16px;
+    }
+
+    .panel { padding: 22px; }
+
+    .panel h2 {
+      margin: 0 0 20px;
+      font-size: 23px;
+    }
+
+    label {
+      display: block;
+      margin: 16px 0 7px;
+      color: #b8c3d6;
+      font-size: 15px;
+    }
+
+    input {
+      width: 100%;
+      min-height: 54px;
+      padding: 0 14px;
+      border: 1px solid #35435a;
+      border-radius: 11px;
+      background: #090e18;
+      color: #fff;
+      font: inherit;
+      font-size: 17px;
+    }
+
+    button {
+      width: 100%;
+      min-height: 58px;
+      margin-top: 22px;
+      border: 0;
+      border-radius: 12px;
+      background: linear-gradient(100deg, #66e3c4, #69a7ff);
+      color: #071018;
+      font-size: 19px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    input:focus,
+    button:focus {
+      outline: 4px solid #fff;
+      outline-offset: 4px;
+      box-shadow: 0 0 24px #66e3c488;
+    }
+
+    .hint {
+      margin: 16px 0 0;
+      color: #8391a8;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    #debug {
+      position: fixed;
+      z-index: 9999;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      max-height: 30vh;
+      overflow-y: auto;
+      padding: 12px;
+      border: 2px solid #66e3c4;
+      border-radius: 10px;
+      background: #05080eee;
+      color: #d8ffee;
+      font: 14px/1.4 monospace;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    #debug[hidden] { display: none; }
+
+    #debug strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #66e3c4;
+    }
+
+    #debug-log { margin: 0; }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .panel { order: -1; }
+    }
+  </style>
+</head>
+
+<body>
+  <aside id="debug" aria-live="polite">
+    <strong>TV Debug Log</strong>
+    <pre id="debug-log"></pre>
+  </aside>
+
+  <!-- Set true to show and collect debug messages; false to disable the debug UI. -->
+  <script>
+    var DEBUG_UI = false;
+  </script>
+
+  <!-- Debug logger -->
+  <script>
+    (function () {
+      var output = document.getElementById("debug-log");
+      var container = document.getElementById("debug");
+
+      container.hidden = !DEBUG_UI;
+
+      window.debugLog = function (message) {
+        if (!DEBUG_UI) {
+          return;
+        }
+
+        var time = new Date().toLocaleTimeString();
+        output.textContent += "[" + time + "] " + message + "\n";
+        container.scrollTop = container.scrollHeight;
+      };
+
+      window.addEventListener("error", function (event) {
+        var message = event.message || "Resource failed to load";
+
+        if (event.filename) {
+          message += " — " + event.filename;
+        }
+
+        if (event.lineno) {
+          message += ":" + event.lineno;
+        }
+
+        window.debugLog("ERROR: " + message);
+      }, true);
+
+      window.addEventListener("unhandledrejection", function (event) {
+        window.debugLog("PROMISE ERROR: " + String(event.reason));
+      });
+
+      window.addEventListener("load", function () {
+        window.debugLog("Page loaded");
+        window.debugLog("User agent: " + navigator.userAgent);
+        window.debugLog("Secure context: " + Boolean(window.isSecureContext));
+        window.debugLog("WebTransport: " + ("WebTransport" in window));
+        window.debugLog("VideoDecoder: " + ("VideoDecoder" in window));
+        window.debugLog("Custom elements: " + ("customElements" in window));
+        window.debugLog(
+          "moq-watch registered: " +
+          Boolean(window.customElements &&
+                  window.customElements.get("moq-watch"))
+        );
+      });
+
+      window.addEventListener("keydown", function (event) {
+        window.debugLog("Key pressed: " + event.key);
+      });
+    })();
+  </script>
+
+  <!-- Compatibility shim; run before loading the MoQ module. -->
+  <script>
+    if (typeof Promise.withResolvers !== "function") {
+      Promise.withResolvers = function () {
+        var resolve;
+        var reject;
+
+        var promise = new Promise(function (res, rej) {
+          resolve = res;
+          reject = rej;
+        });
+
+        return {
+          promise: promise,
+          resolve: resolve,
+          reject: reject
+        };
+      };
+
+      window.debugLog("Installed Promise.withResolvers compatibility shim");
+    }
+  </script>
+
+  <!-- MoQ Watch custom element -->
+  <script type="module">
+    import "https://esm.sh/@moq/watch/element";
+    window.debugLog("MoQ Watch module loaded");
+  </script>
+
+  <main>
+    <header>
+      <div class="mark" aria-hidden="true">M</div>
+      <div>
+        <h1>MoQ TV</h1>
+        <p class="subtitle">Low-latency live video</p>
+      </div>
+    </header>
+
+    <section class="layout">
+      <div class="player-card">
+        <div class="screen">
+          <div class="placeholder" id="placeholder">
+            <div class="play-icon" aria-hidden="true">▶</div>
+            <strong>Ready to watch</strong>
+            <span>Connect to start the broadcast</span>
+          </div>
+
+          <moq-watch id="watch">
+            <canvas></canvas>
+          </moq-watch>
+        </div>
+
+        <div class="player-footer">
+          <span id="status" aria-live="polite">Not connected</span>
+          <span>MoQ · WebTransport</span>
+        </div>
+      </div>
+
+      <form class="panel" id="connect-form">
+        <h2>Stream connection</h2>
+
+        <label for="url">Relay URL</label>
+        <input
+          id="url"
+          type="url"
+          value="https://cdn.moq.dev/demo"
+          autocomplete="url"
+          spellcheck="false"
+          required
+        >
+
+        <label for="port">Port (optional)</label>
+        <input
+          id="port"
+          type="number"
+          min="1"
+          max="65535"
+          inputmode="numeric"
+          placeholder="Use URL default"
+        >
+
+        <label for="broadcast">Broadcast name</label>
+        <input
+          id="broadcast"
+          value="bbb.hang"
+          spellcheck="false"
+          required
+        >
+
+        <button type="submit">Connect &amp; play</button>
+
+        <p class="hint">
+          Leave the port blank to use the port specified by the URL.
+        </p>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    var form = document.getElementById("connect-form");
+    var watch = document.getElementById("watch");
+    var statusEl = document.getElementById("status");
+    var placeholder = document.getElementById("placeholder");
+    var connectButton = form.querySelector('button[type="submit"]');
+
+    var focusable = [
+      document.getElementById("url"),
+      document.getElementById("port"),
+      document.getElementById("broadcast"),
+      connectButton
+    ];
+
+    connectButton.addEventListener("click", function () {
+      statusEl.textContent = "Button clicked";
+      window.debugLog("Connect button click handler ran");
+    });
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      statusEl.textContent = "Submit handler running";
+      window.debugLog("Form submit handler ran");
+
+      var urlInput = document.getElementById("url").value.trim();
+      var port = document.getElementById("port").value.trim();
+      var broadcast = document.getElementById("broadcast").value.trim();
+
+      if (!urlInput || !broadcast) {
+        statusEl.textContent = "Enter a relay URL and broadcast name";
+        window.debugLog("Missing URL or broadcast name");
+        return;
+      }
+
+      try {
+        var relayUrl = new URL(urlInput);
+
+        if (relayUrl.protocol !== "https:") {
+          statusEl.textContent = "Relay URL must use HTTPS";
+          window.debugLog("Rejected URL: HTTPS is required");
+          return;
+        }
+
+        if (port) {
+          var portNumber = Number(port);
+
+          if (!Number.isInteger(portNumber) ||
+              portNumber < 1 ||
+              portNumber > 65535) {
+            statusEl.textContent = "Enter a valid port number";
+            window.debugLog("Rejected invalid port: " + port);
+            return;
+          }
+
+          relayUrl.port = String(portNumber);
+        }
+
+        window.debugLog("Relay URL: " + relayUrl.toString());
+        window.debugLog("Broadcast: " + broadcast);
+
+        watch.setAttribute("url", relayUrl.toString());
+        watch.setAttribute("name", broadcast);
+
+        placeholder.style.display = "none";
+        statusEl.textContent = "Player configured";
+
+        window.debugLog("Status after update: " + statusEl.textContent);
+        window.debugLog("Set player URL and broadcast attributes");
+      } catch (error) {
+        statusEl.textContent = "URL error: " + String(error);
+        window.debugLog("URL error: " + String(error));
+      }
+    });
+
+    window.addEventListener("load", function () {
+      focusable[0].focus();
+      window.debugLog("Focused URL field");
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key !== "ArrowDown" && event.key !== "ArrowUp") {
+        return;
+      }
+
+      var currentIndex = focusable.indexOf(document.activeElement);
+
+      if (currentIndex === -1) {
+        return;
+      }
+
+      event.preventDefault();
+
+      var direction = event.key === "ArrowDown" ? 1 : -1;
+      var nextIndex =
+        (currentIndex + direction + focusable.length) % focusable.length;
+
+      focusable[nextIndex].focus();
+      window.debugLog("Focus moved to: " + focusable[nextIndex].id);
+    });
+
+    window.debugLog("Connect handlers installed");
+  </script>
+</body>
+</html>
