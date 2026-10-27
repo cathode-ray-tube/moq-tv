@@ -113,10 +113,10 @@ Get the app ID from `appinfo.json`, then launch it:
 ares-launch --device tv YOUR_APP_ID
 ```
 
-For example, if the `id` field in `appinfo.json` is `com.example.app`, use:
+For example, if the `id` field in `appinfo.json` is `com.moqtv.app`, use:
 
 ```bash
-ares-launch --device tv com.example.app
+ares-launch --device tv com.moqtv.app
 ```
 
 To verify the exact app ID, inspect `appinfo.json`:
