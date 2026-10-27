@@ -7,4 +7,4 @@ This folder contains client implementations for connecting to MoQ broadcasts. Im
   
 Both clients use the MoQ Watch player. The webOS implementation includes the LG webOS TV SDK; the browser implementation does not.
 
-Additional clients may be added to this folder as they are developed. Deployment details for each implementation are documented in its own folder.
+Additional clients may be added to this folder as they are developed. Deployment details for each implementation will be documented in its own folder.
