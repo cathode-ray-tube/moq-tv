@@ -80,7 +80,7 @@ This project implements the [moq-lite](https://github.com/moq-dev/moq) specifica
    [`clients/webos/appinfo.json`](clients/webos/appinfo.json):
 
    ```bash
-   ares-launch --device tv moqtv
+   ares-launch --device tv com.moqtv.app
    ```
 
 For packaging, Simulator setup, and troubleshooting, see
