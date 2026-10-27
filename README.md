@@ -73,7 +73,7 @@ This project implements the [moq-lite](https://github.com/moq-dev/moq) specifica
    downloaded):
 
    ```bash
-   ares-install --device tv ./moqtv.ipk
+   ares-install --device tv ./com.moqtv.app_0.0.1_all.ipk
    ```
 
 7. Launch the app using the app ID in the `id` field of
