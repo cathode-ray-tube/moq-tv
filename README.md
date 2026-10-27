@@ -32,52 +32,14 @@
 - `/assets` — logo and images (including `moq-tv-navy.jpeg`)  
 - `/scripts` — helper scripts to run test streams, app packaging, etc
 
-## Quick Start (LG webOS):
+## Getting Started
 
-1. Open [moq-tv Releases](https://github.com/cathode-ray-tube/moq-tv/releases)
-   and download the `.ipk` file attached to the latest release.
-2. Install the **Developer Mode** app on your LG TV, sign in with an
-   [LG webOS TV Developer account](https://webostv.developer.lge.com/), and
-   enable **Dev Mode Status**.
-3. Install the webOS CLI on your computer:
+This repository includes browser and LG webOS TV clients. See each client’s folder for setup, configuration, and deployment details.
 
-   ```bash
-   npm install -g @webos-tools/cli
-   ```
+- **Web:** Serve the files in [`clients/web`](clients/web) locally or deploy them to a web server. Open the page in a browser and enter a relay URL and broadcast name to connect.
+- **LG webOS:** Install the latest `.ipk` from [moq-tv Releases](https://github.com/cathode-ray-tube/moq-tv/releases) on your TV using the webOS Developer Mode app and CLI.
 
-4. On the TV, open the Developer Mode app and enable **Key Server**. Make sure
-   the TV and computer are on the same network.
-5. Register the TV with the CLI:
-
-   ```bash
-   ares-setup-device
-   ```
-
-   Choose **add** and enter a device name such as `tv`, the TV's IP address,
-   port `9922`, and username `prisoner`. Leave the password blank. Then
-   retrieve the TV key:
-
-   ```bash
-   ares-novacom --device tv --getkey
-   ```
-
-   Enter the passphrase shown in the Developer Mode app if prompted.
-6. Install the downloaded package (replace the filename with the one you
-   downloaded):
-
-   ```bash
-   ares-install --device tv ./com.moqtv.app_0.0.1_all.ipk
-   ```
-
-7. Launch the app using the app ID in the `id` field of
-   [`clients/webos/appinfo.json`](clients/webos/appinfo.json):
-
-   ```bash
-   ares-launch --device tv com.moqtv.app
-   ```
-
-For packaging, Simulator setup, and troubleshooting, see
-[`clients/webos/README.md`](clients/webos/README.md).
+For detailed instructions, see the [web client README](clients/web/README.md) and [webOS client README](clients/webos/README.md).
 
 ## Contributing
 
