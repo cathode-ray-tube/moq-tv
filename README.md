@@ -10,7 +10,7 @@
 - Modular design so developers can adapt or replace components  
 - Simple APIs for ingesting, packaging, and playback
 
-## Initial Platform Targets
+## Supported Platforms
 
 *Current working implementations in bold:*
 
