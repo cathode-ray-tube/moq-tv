@@ -15,7 +15,7 @@
 *Current working implementations in bold:*
 
 - **LG webOS**
-- Web-based Smart TV apps (HTML5/JS)
+- **Web-based Smart TV apps and web browser (HTML5/JS)**
 - Samsung Tizen - *coming soon*
 - Android TV / Google TV - *coming soon*
 - Roku (when feasible) - *coming soon*
