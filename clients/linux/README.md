@@ -185,7 +185,7 @@ moq-player
 
 1. Launch the application.
 2. Enter a MoQ URL, port (optional) and  broadcast name.
-3. Select **Connect & play**
+3. Select **Connect & play**.
 
 ## Troubleshooting
 
