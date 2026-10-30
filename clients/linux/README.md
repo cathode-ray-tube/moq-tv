@@ -12,13 +12,6 @@ The application subscribes to a MoQ broadcast through GStreamer's `moqsrc` eleme
 
 - Subscribe to a MoQ stream using a URL and broadcast name.
 - Play video and audio through GStreamer.
-- Display one, three, or four stream tiles.
-- Choose from four layouts:
-  - One full-size tile
-  - Three side-by-side tiles
-  - A 2×2 grid
-  - One large tile with two smaller stacked tiles
-- Configure each tile's MoQ URL and broadcast in the Settings panel.
 - Start and stop all configured players from the main window.
 
 The layout buttons determine the number of active tiles. The three-tile layouts use three streams; the 2×2 layout uses four. Each tile currently uses the same playback pipeline and enables both audio and video.
