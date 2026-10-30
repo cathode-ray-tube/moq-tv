@@ -6,7 +6,7 @@ This folder contains client implementations for connecting to MoQ broadcasts. Th
 - **Linux** — Supporting various distros. See [`linux/README.md`](linux/README.md) for detailed instructions.
 - **webOS** — LG webOS TV version. See [`webos/README.md`](webos/README.md) for setup and deployment instructions.
   
-`Web` and `webOS` are are Javascript-based.  The webOS implementation includes the LG webOS TV SDK; the browser implementation does not.
+`Web` and `webOS` are Javascript-based.  The webOS implementation includes the LG webOS TV SDK; the browser implementation does not.
 
 `Linux` is Rust-based, using GTK4 and GStreamer.
 
