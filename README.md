@@ -6,9 +6,7 @@
 
 ## Key Features
 - Low-latency broadcasting with QUIC transport  
-- Reference/example applications for main Smart TV platforms (initial targets below)  
-- Modular design so developers can adapt or replace components  
-- Simple APIs for ingesting, packaging, and playback
+- Reference/example applications for main Smart TV platforms and more (initial targets below)  
 
 ## Supported Platforms
 
