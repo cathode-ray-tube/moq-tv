@@ -2,7 +2,7 @@
 
 A native desktop player for MoQ audio/video streams, built with Rust, GTK4 and GStreamer.
 
-The application subscribes to a MoQ broadcast through GStreamer's `moqsrc` element, decodes H.264 video and AAC audio, and renders them in a GTK4 window. Use the Settings panel to choose a layout and configure the URL and broadcast for each tile.
+The application subscribes to a MoQ broadcast through GStreamer's `moqsrc` element, decodes H.264 video and AAC audio, and renders them in a GTK4 window.
 
 > **Status:** This player currently plays MoQ streams. MoQ-Secure encryption and signature verification are not integrated.
 
@@ -183,15 +183,9 @@ moq-player
 
 ## Using the player
 
-1. Launch the application. The default stream starts automatically.
-2. Select **Settings** to open the side panel.
-3. Choose a layout using the layout buttons.
-4. Enter a MoQ URL and broadcast name for each tile.
-5. Select **Apply & Play** to create and start the configured players.
-6. Use **Play** or **Stop** to control all active players.
-7. Select **Quit** or close the window to exit.
-
-Changing a layout rebuilds the settings panel and the number of stream inputs. Applying settings stops the old pipelines, replaces them and starts the new ones.
+1. Launch the application.
+2. Enter a MoQ URL, port (optional) and  broadcast name.
+3. Select **Connect & play**
 
 ## Troubleshooting
 
@@ -235,7 +229,7 @@ macOS:
 rm -f "$HOME/Library/Caches/GStreamer/1.0/registry-"*.bin
 ```
 
-### The window opens but a tile stays blank
+### The window opens but player stays blank
 
 Check the application’s terminal output for messages about MoQ pads, caps, and GStreamer errors. Confirm that the broadcast contains supported audio or video streams and that the required parser and decoder plugins are installed.
 
@@ -256,7 +250,6 @@ The pipeline currently sets a fixed audio sink timestamp offset in the source co
 - MoQ-Secure encryption and signature verification are not implemented.
 - The input pipeline expects H.264 video and AAC audio.
 - Audio output is hard-coded to `pipewiresink`.
-- Each tile creates its own playback pipeline; configuring several tiles can use substantial CPU, GPU, network, and audio resources.
 - The application links the first matching audio and video pads. Additional pads of the same media type are ignored.
 - Stream configuration is entered in the UI and is not persisted between launches.
 - Windows is not currently supported.
@@ -273,9 +266,9 @@ MoQ source → verify/decrypt media objects → parse/decode → render
 
 ## Documentation
 
-- [Architecture and code walkthrough](https://github.com/cathode-ray-tube/moq-secure/blob/main/rs/examples/moq-player/docs/architecture.md)
-- [GStreamer pipeline](https://github.com/cathode-ray-tube/moq-secure/blob/main/rs/examples/moq-player/docs/pipeline.md)
-- [Development notes](https://github.com/cathode-ray-tube/moq-secure/blob/main/rs/examples/moq-player/docs/development.md)
+- [Architecture and code walkthrough](https://github.com/cathode-ray-tube/moq-tv/blob/main/clients/linux/docs/architecture.md)
+- [GStreamer pipeline](https://github.com/cathode-ray-tube/moq-tv/blob/main/clients/linux/docs/pipeline.md)
+- [Development notes](https://github.com/cathode-ray-tube/moq-tv/blob/main/clients/linux/docs/development.md)
 
 ## License
 
