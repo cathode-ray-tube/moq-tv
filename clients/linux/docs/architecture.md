@@ -80,44 +80,6 @@ Each decoder also emits `pad-added`. The callback checks whether the new pad is 
 
 This means the implementation handles one audio pad and one video pad per player. It does not select among multiple tracks, handle alternate audio languages, or route multiple video tracks through a single player.
 
-## GTK interface
-
-`build_ui` constructs the main window with:
-
-- A horizontal content area.
-- A `gtk::Grid` for video tiles.
-- A slide-in settings panel.
-- Settings, Play, Stop, and Quit buttons.
-
-The settings panel is controlled by a `gtk::Revealer`. Selecting a layout updates the selected layout and rebuilds the panel, including the number of URL/broadcast input pairs.
-
-### Layout mapping
-
-| Layout index | Tile count | Arrangement |
-|---|---:|---|
-| `0` | 3 | Three tiles side by side |
-| `1` | 4 | 2×2 grid |
-| `2` | 3 | One large tile left, two stacked tiles right |
-| `3` | 1 | One full-size tile |
-
-`tile_position` returns each tile's grid coordinates and span. The 2×2 layout uses one grid cell per tile; the main-plus-two layout spans two columns and two rows for the main tile.
-
-### Applying settings
-
-When **Apply & Play** is selected, the callback:
-
-1. Creates a new `Player` for each input pair.
-2. Installs a GStreamer bus watch for each new pipeline.
-3. Stops the old players.
-4. Replaces the player list.
-5. Clears the tile grid and creates one `gtk::Picture` per player.
-6. Attaches each frame to the grid using the selected layout.
-7. Starts each player.
-
-If creation of any player fails, the callback logs the error and returns before replacing the current players.
-
-The initial player is created separately in `main`, starts immediately, and is displayed in the initial one-tile layout.
-
 ## GStreamer bus messages
 
 `install_bus_watch` logs GStreamer errors and warnings, including the originating element path and debug details when available. End-of-stream is also logged.
