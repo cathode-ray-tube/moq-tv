@@ -14,8 +14,9 @@
 
 *Current working implementations in bold:*
 
-- **LG webOS**
 - **Web-based Smart TV apps and web browser (HTML5/JS)**
+- **Linux**
+- **LG webOS**
 - Samsung Tizen - *coming soon*
 - Android TV / Google TV - *coming soon*
 - Roku (when feasible) - *coming soon*
@@ -25,6 +26,7 @@
 - `/server` — see this for instructions to use moq-relay  
 - `/clients`  
   - `/web` — HTML5 reference player (should work on most web browsers, including Smart TV browsers)
+  - `/linux` — a native desktop player for MoQ streams using Rust, GTK4 and GStreamer
   - `/tizen` — example Tizen app  
   - `/webos` — example webOS app  
   - `/androidtv` — example Android TV app  
@@ -38,6 +40,7 @@ This repository includes browser and LG webOS TV clients. See each client’s fo
 
 - **Web:** Serve the files in [`clients/web`](clients/web) locally or deploy them to a web server. Open the page in a browser and enter a relay URL and broadcast name to connect.
 - **LG webOS:** Install the latest `.ipk` from [moq-tv Releases](https://github.com/cathode-ray-tube/moq-tv/releases) on your TV using the webOS Developer Mode app and CLI.
+- **Linux** Install globally via cargo: ```bash cargo install moq-player``` 
 
 For detailed instructions, see the [web client README](clients/web/README.md) and [webOS client README](clients/webos/README.md).
 
