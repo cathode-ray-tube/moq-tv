@@ -1,6 +1,6 @@
 # Clients
 
-This folder contains client implementations for connecting to MoQ broadcasts. Implementations currently include:
+This folder contains client implementations for connecting to MoQ broadcasts. This currently includes:
 
 - **Web** — Browser version. Open `index.html` through a local or HTTPS web server, enter a relay URL and broadcast name, and select **Connect & play**.
 - **webOS** — LG webOS TV version. See [`webos/README.md`](webos/README.md) for setup and deployment instructions.
