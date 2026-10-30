@@ -6,7 +6,7 @@ edition = "2021"
 description = "A native desktop player for MoQ streams using Rust, GTK4 and GStreamer."
 readme = "README.md"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/cathode-ray-tube/moq-secure"
+repository = "https://github.com/cathode-ray-tube/moq-tv"
 keywords = ["moq", "media", "quic", "gstreamer", "gtk"]
 categories = ["multimedia", "gui"]
 
