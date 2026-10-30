@@ -42,7 +42,7 @@ This repository includes browser and LG webOS TV clients. See each client’s fo
 - **Linux:** See [`clients/linux`](clients/linux) for full instructions for your distro.
 - **LG webOS:** Install the latest `.ipk` from [moq-tv Releases](https://github.com/cathode-ray-tube/moq-tv/releases) on your TV using the webOS Developer Mode app and CLI.
 
-For detailed instructions, see the [web client README](clients/web/README.md) and [webOS client README](clients/webos/README.md).
+For detailed instructions, see the specific `README.md` for each client.
 
 ## Contributing
 
