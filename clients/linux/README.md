@@ -12,9 +12,6 @@ The application subscribes to a MoQ broadcast through GStreamer's `moqsrc` eleme
 
 - Subscribe to a MoQ stream using a URL and broadcast name.
 - Play video and audio through GStreamer.
-- Start and stop all configured players from the main window.
-
-The layout buttons determine the number of active tiles. The three-tile layouts use three streams; the 2×2 layout uses four. Each tile currently uses the same playback pipeline and enables both audio and video.
 
 ## Requirements
 
