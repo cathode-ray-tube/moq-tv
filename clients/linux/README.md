@@ -6,7 +6,7 @@ The application subscribes to a MoQ broadcast through GStreamer's `moqsrc` eleme
 
 > **Status:** This player currently plays MoQ streams. MoQ-Secure encryption and signature verification are not integrated.
 
-![moq-player screenshot](https://raw.githubusercontent.com/cathode-ray-tube/moq-secure/main/assets/moq-player.jpg)
+![moq-player screenshot](https://raw.githubusercontent.com/cathode-ray-tube/moq-tv/main/assets/moq-tv.jpg)
 
 ## Features
 
