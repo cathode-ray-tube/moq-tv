@@ -6,7 +6,7 @@
 
 ## Key Features
 - Low-latency broadcasting with QUIC transport  
-- Reference/example applications for main Smart TV platforms and more (initial targets below)  
+- Reference/example applications for Smart TV platforms and beyond (initial targets below)  
 
 ## Supported Platforms
 
