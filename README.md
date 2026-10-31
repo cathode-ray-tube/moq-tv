@@ -6,7 +6,7 @@
 - Low-latency broadcasting with QUIC transport  
 - Reference/example applications for Smart TV platforms and beyond (initial targets below)  
 
-## Supported Platforms
+## Platforms
 
 *Current working implementations in bold:*
 
