@@ -2,7 +2,7 @@
 
 **MoQ-TV** is a project to bring Media over QUIC (MoQ) to Smart TVs — focused on low-latency broadcasting and smooth viewer experience for live streams.
 
-## Key Features
+## Features
 - Low-latency broadcasting with QUIC transport  
 - Reference/example applications for Smart TV platforms and beyond (initial targets below)  
 
